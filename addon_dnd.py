@@ -41,8 +41,6 @@ class DNDCharacter:
     description["max_hp"] = int()
     description["hitdie"] = 20
 
-    isSet = False
-
     def calculateSavingThrow(self,value):
         compare = int(value)
         print(compare)
@@ -78,50 +76,30 @@ class DNDCharacter:
             return 9
         elif(compare == 30):
             return 10
+
+    def setAttribute(self,key : str,value):
+        if (key in self.attribute.saving_throws):
+            self.attribute.saving_throws[key] = value
+            self.calculateSkills()
+        elif (key in self.description):
+            self.description[key] = value
+        else:
+            return str("Error : " + " attribute (" + key + ") not found")
     
-    def setInitiative(self,value1,value2,value3):
-        self.description["initiative"] = self.calculateSavingThrow(value1 + value2 + value3)
-
-    def setDescription(self,key,value):
-        self.description[key] = value
-
-    def getDescription(self,key):
-        return self.description[key]
-
-    def getInitiative(self):
-        return self.description["initiative"]
-
-    def setMaxHP(self,value):
-        self.description["max_hp"] = value
-
-    def getMaxHP(self,value):
-        return self.description["max_hp"]
-
-    def setHP(self,value):
-        self.description["current_hp"] = value
-    
-    def getHP(self):
-        return self.description["current_hp"]
-
-    def setSavingThrow(self,key,value1 : int,value2 : int,value3 : int):
-        self.attribute.saving_throws[key] = int(value1) + int(value2) + int(value3)
-
-    def setSavingThrowLiteral(self,key,value):
-        self.attribute.saving_throws[key] = value
-    
-    def getSavingThrow(self,key):
-        print("Getting Saving Throw " + key)
-        return self.calculateSavingThrow(self.attribute.saving_throws[key])
-
-    def getSkill(self,key):
-        return self.attribute.skills[key]
+    def getAttribute(self,key : str):
+        if (key in self.attribute.saving_throws):
+            return self.attribute.saving_throws[key]
+        elif (key in self.description):
+            return self.description[key]
+        elif (key in self.attribute.skills):
+            return self.attribute.skills[key]
+        else:
+            return str("Error : " + "attribute (" + key + ") not found")
     
     def calculateSkills(self):
-        if (self.isSet):
-            return
         self.attribute.skills["athletics"] = self.calculateSavingThrow(self.attribute.saving_throws["strength"])
         self.attribute.skills["acrobatics"] = self.calculateSavingThrow(self.attribute.saving_throws["dexterity"])
-        self.attribute.skills["sleight_of_hand"] = self.calculateSavingThrow(self.attribute.saving_throw["dexterity"])
+        self.attribute.skills["sleight_of_hand"] = self.calculateSavingThrow(self.attribute.saving_throws["dexterity"])
         self.attribute.skills["arcana"] = self.calculateSavingThrow(self.attribute.saving_throws["intelligence"])
         self.attribute.skills["history"] = self.calculateSavingThrow(self.attribute.saving_throws["intelligence"])
         self.attribute.skills["nature"] = self.calculateSavingThrow(self.attribute.saving_throws["intelligence"])
@@ -135,7 +113,7 @@ class DNDCharacter:
         self.attribute.skills["intimidation"] = self.calculateSavingThrow(self.attribute.saving_throws["charisma"])
         self.attribute.skills["performance"] = self.calculateSavingThrow(self.attribute.saving_throws["charisma"])
         self.attribute.skills["persuasion"] = self.calculateSavingThrow(self.attribute.saving_throws["charisma"])
-        self.description["max_hp"] = description["hitdie"] + self.calculateSavingThrow(self.attribute.saving_throws["constitution"])
+        self.description["max_hp"] = self.description["hitdie"] + self.calculateSavingThrow(self.attribute.saving_throws["constitution"])
 
 
 class DNDGame:
@@ -162,4 +140,39 @@ class DNDGame:
 
     def rollD6(self):
         return randint(1,6)
+
+    def getModified(self,value : int):
+        compare = int(value)
+        if (compare == 1):
+            return -5
+        elif(compare >= 2 and compare < 4):
+            return -4
+        elif(compare >= 4 and compare < 6):
+            return -3
+        elif(compare >= 6 and compare < 8):
+            return -2
+        elif(compare >= 8 and compare < 10):
+            return -1
+        elif(compare >= 10 and compare < 12):
+            return 0
+        elif(compare >= 12 and compare < 14):
+            return 1
+        elif(compare >= 14 and compare < 16):
+            return 2
+        elif(compare >= 16 and compare < 18):
+            return 3
+        elif(compare >= 18 and compare < 20):
+            return 4
+        elif(compare >= 20 and compare < 22):
+            return 5
+        elif(compare >= 22 and compare < 24):
+            return 6
+        elif(compare >= 24 and compare < 26):
+            return 7
+        elif(compare >= 26 and compare < 28):
+            return 8
+        elif(compare >= 28 and compare < 30):
+            return 9
+        elif(compare == 30):
+            return 10
 
