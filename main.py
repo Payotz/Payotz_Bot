@@ -36,4 +36,4 @@ async def overwatch_get_hero(left : str):
         await my_bot.say(msg)
 
 
-my_bot.run('MzAyMjY4MzY5MzM0NDM1ODUz.DSwnqA.BGliBkpHOG_JtwiJOtyv6nAIACk')
+my_bot.run('token')
